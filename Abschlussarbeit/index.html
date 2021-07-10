@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css" type="text/css" media="screen"/>
+    <script src="Main/main.js"></script>
+    <script src="Vector/vector.js"></script>
+    <script src="People/linejudge.js"></script>
+    <script src="People/referee.js"></script>
+    <script src="People/player.js"></script>
+    <script src="Moveable/moveable.js"></script>
+    <title>Football Simulator</title>
+</head>
+<body>
+    <h1>Welcome to your online football simulator!</h1> <br>
+    <canvas width="1160" height="760"></canvas>
+
+    <form id="gamedetails" method="GET">
+        <h3>Game Details</h3>
+        <fieldset>
+            <legend>Score:</legend> 0:0
+        </fieldset>
+
+        <fieldset>
+            <legend>Player with Ball:</legend>
+            Number 0
+        </fieldset>
+
+        <fieldset>
+            <legend>Add new player</legend>
+            <p> You can add a new player randomly on the field. It gets assigned a random team, too. Where do you want to place the player?</p>
+            <input type="radio" id="leftfield" name="reposition" value="leftfield" checked>
+            <label for="leftfield">Left Fieldside</label><br>
+            <input type="radio" id="rightfield" name="reposition" value="rightfield">
+            <label for="rightfield">Right Fieldside</label><br> <br>
+            <button>add</button>
+        </fieldset>
+    </form>
+
+    <form id="playerinfo" method="GET">
+        <h3>Player Information</h3>
+        <p>Just click on a random player to see details!</p>
+        <fieldset>
+            <legend>Uniform Number:</legend>
+            Bla
+        </fieldset>
+
+        <fieldset>
+            <legend>Uniform Color:</legend>
+            Bla
+        </fieldset>
+
+        <fieldset>
+            <legend>Player Precision</legend>
+            Bla
+        </fieldset>
+
+        <fieldset>
+            <legend>Sprint Speed</legend>
+            Bla
+        </fieldset>
+
+        <fieldset>
+            <legend>Remove Player</legend>
+            <button>remove</button>
+        </fieldset>
+    </form>
+
+    <form id="teamone" method="GET">
+        <h3>Team One Players</h3>
+        <fieldset>
+            <legend>Choose uniform color:</legend>
+            <input type="color" name="particlecolor" id="particlecolor" value="#ffffff">
+        </fieldset>
+
+        <fieldset>
+            <legend>Player Precision</legend>
+            Choose minimum:<br>
+            0<input type="range" id="precision" name="player precision" min="0" max="49" value="0" step="7">49<br>
+            Choose maximum:<br>
+            50<input type="range" id="precision" name="player precision" min="50" max="100" value="50" step="10">100<br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Sprint Speed</legend>
+            Choose minimum:<br>
+            0<input type="range" id="precision" name="player precision" min="0" max="49" value="0" step="7">49<br>
+            Choose maximum:<br>
+            50<input type="range" id="precision" name="player precision" min="50" max="100" value="50" step="10">100<br>
+        </fieldset>
+        <br>
+        <input type="reset" value="reset form">
+    </form>
+
+    <form id="teamtwo" method="GET">
+        <h3>Team Two Players</h3>
+        <fieldset>
+            <legend>Choose uniform color:</legend>
+            <input type="color" name="particlecolor" id="particlecolor" value="#ffffff">
+        </fieldset>
+
+        <fieldset>
+            <legend>Player Precision</legend>
+            Choose minimum:<br>
+            0<input type="range" id="precision" name="player precision" min="0" max="49" value="0" step="7">49<br>
+            Choose maximum:<br>
+            50<input type="range" id="precision" name="player precision" min="50" max="100" value="50" step="10">100<br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Sprint Speed</legend>
+            Choose minimum:<br>
+            0<input type="range" id="precision" name="player precision" min="0" max="49" value="0" step="7">49<br>
+            Choose maximum:<br>
+            50<input type="range" id="precision" name="player precision" min="50" max="100" value="50" step="10">100<br>
+        </fieldset>
+        <br>
+        <input type="reset" value="reset form">
+    </form>
+</body>
+</html>
