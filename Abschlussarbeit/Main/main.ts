@@ -1,4 +1,4 @@
-namespace main {
+namespace Abschlussarbeit {
     window.addEventListener("load", handleLoad);
 
     export let crc2: CanvasRenderingContext2D;
@@ -14,6 +14,8 @@ namespace main {
         drawGate();
         drawFielddetails();
         createReferee(1);
+        //createBall(1);
+        //createPlayer(22);
         createLinejudge(2);
         window.setInterval(update, 20);
     }

@@ -1,26 +1,10 @@
 "use strict";
 var Abschlussarbeit;
 (function (Abschlussarbeit) {
-    window.addEventListener("load", handleLoad);
-    Abschlussarbeit.golden = 0.62;
-    let moveables = [];
-    function handleLoad(_event) {
-        let canvas = document.querySelector("canvas");
-        Abschlussarbeit.crc2 = canvas.getContext("2d");
-        drawField();
-        drawGate();
-        drawFielddetails();
-        createReferee(1);
-        //createBall(1);
-        //createPlayer(22);
-        createLinejudge(2);
-        window.setInterval(update, 20);
-    }
-    function drawField() {
+    function pitch() {
+        //draw field
         Abschlussarbeit.crc2.fillStyle = "darkgreen";
         Abschlussarbeit.crc2.fillRect(0, 0, Abschlussarbeit.crc2.canvas.width, Abschlussarbeit.crc2.canvas.height);
-    }
-    function drawGate() {
         //big gate left
         Abschlussarbeit.crc2.beginPath();
         Abschlussarbeit.crc2.moveTo(0, 190);
@@ -69,8 +53,6 @@ var Abschlussarbeit;
         Abschlussarbeit.crc2.strokeStyle = "white";
         Abschlussarbeit.crc2.stroke();
         Abschlussarbeit.crc2.closePath();
-    }
-    function drawFielddetails() {
         //line
         Abschlussarbeit.crc2.beginPath();
         Abschlussarbeit.crc2.moveTo(580, 0);
@@ -85,23 +67,6 @@ var Abschlussarbeit;
         Abschlussarbeit.crc2.stroke();
         Abschlussarbeit.crc2.closePath();
     }
-    function createReferee(nReferee) {
-        for (let i = 0; i < nReferee; i++) {
-            let referee = new Referee(); //name of subclass, new referee created
-            moveables.push(referee); //pushed into players array
-        }
-    }
-    function createLinejudge(_nLinejudge) {
-        for (let i = 0; i < _nLinejudge; i++) {
-            let linejudge = new Linejudge(); //name of subclass, new linejudge created
-            moveables.push(linejudge); // pushed into players array
-        }
-    }
-    function update() {
-        for (let moveable of moveables) {
-            moveable.draw();
-            moveable.move(1);
-        }
-    }
+    Abschlussarbeit.pitch = pitch;
 })(Abschlussarbeit || (Abschlussarbeit = {}));
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=field.js.map

@@ -1,6 +1,6 @@
 "use strict";
-var main;
-(function (main) {
+var Abschlussarbeit;
+(function (Abschlussarbeit) {
     class Vector {
         constructor(_x, _y) {
             this.set(_x, _y);
@@ -17,7 +17,16 @@ var main;
             this.x += _addend.x;
             this.y += _addend.y;
         }
+        copy() {
+            return new Vector(this.x, this.y);
+        }
+        random(_minLength, _maxLength) {
+            let length = _minLength + Math.random() * (_maxLength - _minLength);
+            let direction = Math.random() * 2 * Math.PI;
+            this.set(Math.cos(direction), Math.sin(direction));
+            this.scale(length);
+        }
     }
-    main.Vector = Vector;
-})(main || (main = {}));
+    Abschlussarbeit.Vector = Vector;
+})(Abschlussarbeit || (Abschlussarbeit = {}));
 //# sourceMappingURL=vector.js.map
