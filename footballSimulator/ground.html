@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="Main.js"></script>
+    <script src="Field.js"></script>
+    <script src="Movable.js"></script>
+    <script src="Player.js"></script>
+    <script src="Referee.js"></script>
+    <script src="Ball.js"></script>
+    <script src="Coordinate.js"></script>
+</head>
+
+<body>
+    <h1>Welcome to your online football simulator!</h1> <br>
+    <button id="starter">Start Game!</button><br>
+    <button id="reset" class="hidden">Reset Game</button><br>
+    <p>A/N: To start & restart the game you can click the button above <br>
+        or hit <b>[enter]</b> to start, and <b>[escape]</b> to restart</p>
+    <canvas id="playground" width="1160" height="760" class="hidden"></canvas>
+
+    <div id="form">
+        <form id="gamedetails" class="hidden">
+            <h3>Game Details</h3>
+            <fieldset>
+                <legend>Score:</legend> <span class="team-one-score"><b>0</b></span>&nbsp;:&nbsp;<span class="team-two-score"><b>0</b></span>
+            </fieldset>
+            <fieldset>
+                <legend>Add new player</legend>
+                <p> You can add a new player randomly on the field. It gets assigned a random team, too. Where do you
+                    want to place the player?</p>
+                <input type="radio" id="leftfield" name="reposition" value="leftfield" checked>
+                <label for="leftfield">Left Fieldside</label><br>
+                <input type="radio" id="rightfield" name="reposition" value="rightfield">
+                <label for="rightfield">Right Fieldside</label><br> <br>
+                <button>add</button>
+            </fieldset>
+        </form>
+
+        <form id="playerinfo" class="hidden">
+            <h3>Player Information</h3>
+            <p>Details of the player currently having the ball</p>
+            <fieldset>
+                <legend>Player Number:</legend>
+                <span class="player-with-ball">
+                    <p class="player__jersy">0</p>
+                </span>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Player Team</legend>
+                <span class="player-with-ball">
+                    <p class="player__team">0</p>
+                </span>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Player Precision</legend>
+                <span class="player-with-ball">
+                    <p class="player__precision">0</p>
+                </span>
+            </fieldset>
+
+            <fieldset>
+                <legend>Sprint Speed</legend>
+                <span class="player-with-ball">
+                    <p class="player__speed">0</p>
+                </span>
+            </fieldset>
+        </form>
+
+        <form id="teamone">
+            <h3>Settings - Team One</h3>
+            <fieldset>
+                <legend>Choose shirt color:</legend>
+                <input type="color" name="particlecolor" id="color-team-one" value="#d703fc">
+            </fieldset>
+
+            <fieldset>
+                <legend>Player Precision</legend>
+                Choose minimum:<br>
+                0<input type="range" id="team-one-precision-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                Choose maximum:<br>
+                50<input type="range" id="team-one-precision-max" name="player precision" min="50" max="100" value="75"
+                    step="10">100<br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Sprint Speed</legend>
+                Choose minimum:<br>
+                0<input type="range" id="team-one-speed-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                Choose maximum:<br>
+                50<input type="range" id="team-one-speed-max" name="player precision" min="50" max="100" value="75"
+                    step="10">100<br>
+            </fieldset>
+            <br>
+        </form>
+
+        <form id="teamtwo">
+            <h3>Settings - Team Two</h3>
+            <fieldset>
+                <legend>Choose shirt color:</legend>
+                <input type="color" name="particlecolor" id="color-team-two" value="#00ffaa">
+            </fieldset>
+
+            <fieldset>
+                <legend>Player Precision</legend>
+                Choose minimum:<br>
+                0<input type="range" id="team-two-precision-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                Choose maximum:<br>
+                50<input type="range" id="team-two-precision-max" name="player precision" min="50" max="100" value="75"
+                    step="10">100<br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Sprint Speed</legend>
+                Choose minimum:<br>
+                0<input type="range" id="team-two-speed-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                Choose maximum:<br>
+                50<input type="range" id="team-two-speed-max" name="player precision" min="50" max="100" value="75"
+                    step="10">100<br>
+            </fieldset>
+            <br>
+        </form>
+    </div>
+</body>
+
+</html>
