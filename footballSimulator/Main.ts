@@ -4,6 +4,7 @@ namespace footballSimulator {
   ) as HTMLCanvasElement;
   const playerInfo = document.getElementById("playerinfo") as HTMLFormElement;
   const gameDetails = document.getElementById("gamedetails") as HTMLFormElement;
+  const playerStats = document.getElementById("playerstats") as HTMLFormElement;
   const teamOne = document.getElementById("teamone") as HTMLFormElement;
   const teamTwo = document.getElementById("teamtwo") as HTMLFormElement;
   const ground = canvasGround.getContext("2d")!;
@@ -221,6 +222,7 @@ namespace footballSimulator {
 
     playerInfo.classList.toggle("hidden");
     gameDetails.classList.toggle("hidden");
+    //playerStats.classList.toggle("hidden");
     teamOne.classList.toggle("hidden");
     teamTwo.classList.toggle("hidden");
     canvasGround.classList.toggle("hidden");

@@ -40,6 +40,10 @@ form {
   margin-bottom: 50px;
 }
 
+#playerinfo, #gamedetails{
+  height: 600px;
+}
+
 legend {
   color: darkgreen;
   font-weight: bold;

@@ -30,23 +30,35 @@
             <fieldset>
                 <legend>Score:</legend> <span class="team-one-score"><b>0</b></span>&nbsp;:&nbsp;<span class="team-two-score"><b>0</b></span>
             </fieldset>
+
             <fieldset>
-                <legend>Add new player</legend>
-                <p> You can add a new player randomly on the field. It gets assigned a random team, too. Where do you
-                    want to place the player?</p>
-                <input type="radio" id="leftfield" name="reposition" value="leftfield" checked>
-                <label for="leftfield">Left Fieldside</label><br>
-                <input type="radio" id="rightfield" name="reposition" value="rightfield">
-                <label for="rightfield">Right Fieldside</label><br> <br>
+                <legend>Manage Players</legend>
+                <p>Choose a player to delete:</p>
+                <select id="playerdelete" name="playerdelete">
+                    <option value="T1P1">Team 1 - Player 1</option>
+                    <option value="T1P2">Team 1 - Player 2</option>
+                </select>
+                <button>remove</button> <br>
+
+                <p>Choose a player to add:</p>
+                <select id="playeradd" name="playeradd">
+                    <option value="T1P1">To Team 1</option>
+                    <option value="T1P2">To Team 2</option>
+                </select> <br>
                 <button>add</button>
             </fieldset>
         </form>
 
         <form id="playerinfo" class="hidden">
             <h3>Player Information</h3>
-            <p>Details of the player currently having the ball</p>
+            <p>You can choose a player you want to see the details of or check the stats of the player that currently has the ball below</p>
+            <select id="chosenplayerstats" name="chosenplayerstats">
+                <option value="T1P1">Team 1 - Player 1</option>
+                <option value="T1P2">Team 1 - Player 2</option>
+            </select>
+
             <fieldset>
-                <legend>Player Number:</legend>
+                <legend>Player Number</legend>
                 <span class="player-with-ball">
                     <p class="player__jersy">0</p>
                 </span>
@@ -99,7 +111,8 @@
                     step="10">100<br>
             </fieldset>
             <br>
-        </form>
+            <input type="reset" value="reset settings">
+            </form>
 
         <form id="teamtwo">
             <h3>Settings - Team Two</h3>
@@ -126,6 +139,7 @@
                     step="10">100<br>
             </fieldset>
             <br>
+            <input type="reset" value="reset settings">
         </form>
     </div>
 </body>
