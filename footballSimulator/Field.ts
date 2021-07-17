@@ -22,7 +22,8 @@ namespace footballSimulator {
   export function drawField(): void {
     const canvasGround = getCanvas();
     const ground = getGround();
-    ground.fillStyle = "green";
+    ground.fillStyle = "darkgreen";
+    ground.fill();
     ground.fillRect(0, 0, canvasGround.width, canvasGround.height);
     ground.save();
     ground.beginPath();

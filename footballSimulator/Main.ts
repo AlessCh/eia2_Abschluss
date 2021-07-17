@@ -4,7 +4,7 @@ namespace footballSimulator {
   ) as HTMLCanvasElement;
   const playerInfo = document.getElementById("playerinfo") as HTMLFormElement;
   const gameDetails = document.getElementById("gamedetails") as HTMLFormElement;
-  const playerStats = document.getElementById("playerstats") as HTMLFormElement;
+  //const playerStats = document.getElementById("playerstats") as HTMLFormElement;
   const teamOne = document.getElementById("teamone") as HTMLFormElement;
   const teamTwo = document.getElementById("teamtwo") as HTMLFormElement;
   const ground = canvasGround.getContext("2d")!;
@@ -268,29 +268,29 @@ namespace footballSimulator {
       rect.left +
       (Math.random() > 0.5
         ? Math.abs(
-            playerWithTheBall?.precision
-              ? 100 - playerWithTheBall?.precision ?? 0 * 1
-              : 0
-          )
+          playerWithTheBall?.precision
+            ? 100 - playerWithTheBall?.precision ?? 0 * 1
+            : 0
+        )
         : Math.abs(
-            playerWithTheBall?.precision
-              ? 100 - playerWithTheBall?.precision ?? 0 * -1
-              : 0
-          ));
+          playerWithTheBall?.precision
+            ? 100 - playerWithTheBall?.precision ?? 0 * -1
+            : 0
+        ));
     const y =
       event.clientY -
       rect.top +
       (Math.random() > 0.5
         ? Math.abs(
-            playerWithTheBall?.precision
-              ? 100 - playerWithTheBall?.precision ?? 0 * 1
-              : 0
-          )
+          playerWithTheBall?.precision
+            ? 100 - playerWithTheBall?.precision ?? 0 * 1
+            : 0
+        )
         : Math.abs(
-            playerWithTheBall?.precision
-              ? 100 - playerWithTheBall?.precision ?? 0 * -1
-              : 0
-          ));
+          playerWithTheBall?.precision
+            ? 100 - playerWithTheBall?.precision ?? 0 * -1
+            : 0
+        ));
     console.log(x, y);
     const newBallCoordinates = new Coordinate(x, y);
 
