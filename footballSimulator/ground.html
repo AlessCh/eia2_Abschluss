@@ -34,37 +34,63 @@
             <fieldset>
                 <legend>Manage Players</legend>
                 <p>Choose a player to delete:</p>
-                <select id="playerdelete" name="playerdelete">
-                    <option value="T1P1">From Team 1</option>
-                    <option value="T1P2">From Team 2</option>
+                <select id="playerdelete-team" name="playerdelete-team">
+                    <option value="T1">Team 1</option>
+                    <option value="T2">Team 2</option>
                 </select>
-                <button id="removeplayer">remove</button>
+                <select id="playerdelete-jersy" name="playerdelete-jersy">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+                <button type="button" id="removeplayer">remove</button>
                 <br>
 
-                <p>Choose a player to add:</p>
-                <select id="playeradd" name="playeradd">
-                    <option value="T1P1">To Team 1</option>
-                    <option value="T1P2">To Team 2</option>
-                </select>
-                <button id="addplayer">add</button>
+                <p>Choose 1 player only to add:</p>
+                <select id="playeradd" name="playeradd"></select>
+                <button type="button" id="addplayer">add</button>
             </fieldset>
 
             <fieldset>
             <legend>Chosen player stats</legend>
             <p>Choose a team and see players Number / Team / Precision / Speed</p>
-            <button id="teamonestats">Team 1</button>
-            <button id="teamtwostats">Team 2</button>
+                <select id="ps-team" name="ps-team">
+                    <option value="T1">Team 1</option>
+                    <option value="T2">Team 2</option>
+                </select>
+                <select id="ps-player" name="ps-player">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+                <button type="button" id="ps-btn">see stats</button>
                 <span class="">
-                    <p class="">0</p>
+                    <p id="ps-number-show">0</p>
                 </span>
                 <span class="">
-                    <p class="">0</p>
+                    <p id="ps-team-show">0</p>
                 </span>
                 <span class="">
-                    <p class="">0</p>
+                    <p id="ps-precision-show">0</p>
                 </span>
                 <span class="">
-                    <p class="">0</p>
+                    <p id="ps-speed-show">0</p>
                 </span>
             </fieldset>
         </form>

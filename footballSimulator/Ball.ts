@@ -26,7 +26,7 @@ namespace footballSimulator {
     }
 
     draw(): void {
-      const canvasGround = getCanvas();
+      //const canvasGround = getCanvas();
       const ground = getGround();
       ground.save();
       ground.beginPath();

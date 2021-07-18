@@ -1,6 +1,6 @@
 namespace footballSimulator {
   let canvasGround: HTMLCanvasElement;
-  let ground: CanvasRenderingContext2D;
+ // let ground: CanvasRenderingContext2D;
 
   export function getCanvas(): HTMLCanvasElement {
     if (!canvasGround) {

@@ -70,7 +70,8 @@ margin-bottom: 15px;
 #teamonestats,
 #teamtwostats,
 #addplayer,
-#removeplayer{
+#removeplayer,
+#ps-btn{
 width: 100px;
 height: 20px;
 margin-top:2px;

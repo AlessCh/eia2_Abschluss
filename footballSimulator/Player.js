@@ -2,6 +2,15 @@
 var footballSimulator;
 (function (footballSimulator) {
     class Player {
+        currentPosition;
+        defaultPosition;
+        team;
+        jersy;
+        ballOwner;
+        jersyColor;
+        speed;
+        precision;
+        triedToGetBall;
         constructor(currentplayerPosition, defaultplayerPosition, team, jersy, ballOwner, jerseyColor, speed, precision) {
             this.currentPosition = currentplayerPosition;
             this.defaultPosition = defaultplayerPosition;
@@ -17,7 +26,7 @@ var footballSimulator;
             throw new Error("Method not implemented.");
         }
         draw() {
-            const canvasGround = footballSimulator.getCanvas();
+            //const canvasGround = getCanvas();
             const ground = footballSimulator.getGround();
             ground.save();
             ground.beginPath();

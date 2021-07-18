@@ -2,6 +2,8 @@
 var footballSimulator;
 (function (footballSimulator) {
     class Ball {
+        currentPosition;
+        ownedBy;
         constructor(position, player) {
             this.currentPosition = position;
             this.ownedBy = player;
@@ -22,7 +24,7 @@ var footballSimulator;
             return true;
         }
         draw() {
-            const canvasGround = footballSimulator.getCanvas();
+            //const canvasGround = getCanvas();
             const ground = footballSimulator.getGround();
             ground.save();
             ground.beginPath();

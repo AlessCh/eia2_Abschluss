@@ -1,4 +1,5 @@
 namespace footballSimulator {
+
   export class Player implements Movable {
     currentPosition: Coordinate;
     defaultPosition: Coordinate;
@@ -35,7 +36,7 @@ namespace footballSimulator {
       throw new Error("Method not implemented.");
     }
     draw(): void {
-      const canvasGround = getCanvas();
+      //const canvasGround = getCanvas();
       const ground = getGround();
 
       ground.save();

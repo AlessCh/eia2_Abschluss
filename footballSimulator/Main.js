@@ -13,11 +13,14 @@ var footballSimulator;
     const resetGameButton = document.getElementById("reset");
     const groundWidth = canvasGround.width;
     const groundHeight = canvasGround.height;
-    const movable = [];
+    var movable = [];
     let ballOwnedByPlayer = false;
     let playerWithTheBall;
     let teamOneScore = 0;
     let teamTwoScore = 0;
+    footballSimulator.players = [];
+    footballSimulator.adds = 0;
+    footballSimulator.dels = [];
     const leftGoal = [
         new footballSimulator.Coordinate(50, 330),
         new footballSimulator.Coordinate(50, 410),
@@ -56,6 +59,16 @@ var footballSimulator;
         new footballSimulator.Coordinate((groundWidth / 110) * 95, (groundHeight / 75) * 65),
         new footballSimulator.Coordinate((groundWidth / 110) * 95, (groundHeight / 75) * 17),
     ];
+    var jerseyColorTeamOne;
+    var jerseyColorTeamTwo;
+    var speedTeamOneMin;
+    var speedTeamOneMax;
+    var speedTeamTwoMin;
+    var speedTeamTwoMax;
+    var precisionTeamOneMin;
+    var precisionTeamOneMax;
+    var precisionTeamTwoMin;
+    var precisionTeamTwoMax;
     let animationInProgress = true;
     footballSimulator.drawField();
     setupReferees();
@@ -69,12 +82,17 @@ var footballSimulator;
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
     function setupTeam(teamName, positions, jerseyColor, playerPrecision, playerSpeed) {
+        var players = [];
         for (let i = 1; i <= 11; i++) {
             const player = new footballSimulator.Player(positions[i - 1], Object.assign({}, positions[i - 1]), teamName, i, false, jerseyColor, randomIntFromInterval(playerSpeed[0], playerSpeed[1]), randomIntFromInterval(playerPrecision[0], playerPrecision[1]));
+            players.push(player);
+        }
+        players = players.filter(changes);
+        players.forEach((player) => {
             console.log(player);
             player.draw();
             movable.push(player);
-        }
+        });
     }
     function setupReferees() {
         for (let i = 0; i < 2; i++) {
@@ -117,16 +135,16 @@ var footballSimulator;
         const speedTeamOneInputMax = document.getElementById("team-one-speed-max");
         const speedTeamTwoInputMin = document.getElementById("team-two-speed-min");
         const speedTeamTwoInputMax = document.getElementById("team-two-speed-max");
-        const jerseyColorTeamOne = jerseyColorTeamOneInput.value;
-        const jerseyColorTeamTwo = jerseyColorTeamTwoInput.value;
-        const speedTeamOneMin = Number(speedTeamOneInputMin.value);
-        const speedTeamOneMax = Number(speedTeamOneInputMax.value);
-        const speedTeamTwoMin = Number(speedTeamTwoInputMin.value);
-        const speedTeamTwoMax = Number(speedTeamTwoInputMax.value);
-        const precisionTeamOneMin = Number(precisionTeamOneInputMin.value);
-        const precisionTeamOneMax = Number(precisionTeamOneInputMax.value);
-        const precisionTeamTwoMin = Number(precisionTeamTwoInputMin.value);
-        const precisionTeamTwoMax = Number(precisionTeamTwoInputMax.value);
+        jerseyColorTeamOne = jerseyColorTeamOneInput.value;
+        jerseyColorTeamTwo = jerseyColorTeamTwoInput.value;
+        speedTeamOneMin = Number(speedTeamOneInputMin.value);
+        speedTeamOneMax = Number(speedTeamOneInputMax.value);
+        speedTeamTwoMin = Number(speedTeamTwoInputMin.value);
+        speedTeamTwoMax = Number(speedTeamTwoInputMax.value);
+        precisionTeamOneMin = Number(precisionTeamOneInputMin.value);
+        precisionTeamOneMax = Number(precisionTeamOneInputMax.value);
+        precisionTeamTwoMin = Number(precisionTeamTwoInputMin.value);
+        precisionTeamTwoMax = Number(precisionTeamTwoInputMax.value);
         setupTeams(jerseyColorTeamOne, jerseyColorTeamTwo, [speedTeamOneMin, speedTeamOneMax], [speedTeamTwoMin, speedTeamTwoMax], [precisionTeamOneMin, precisionTeamOneMax], [precisionTeamTwoMin, precisionTeamTwoMax]);
         playerInfo.classList.toggle("hidden");
         gameDetails.classList.toggle("hidden");
@@ -136,6 +154,8 @@ var footballSimulator;
         canvasGround.classList.toggle("hidden");
         startGameButton.classList.toggle("hidden");
         resetGameButton.classList.toggle("hidden");
+        setupPlayerStats();
+        setupChangesBtns();
         gameStarted = true;
     }
     function resetGame() {
@@ -245,6 +265,108 @@ var footballSimulator;
             teamTwoScoreSpan.textContent = String(teamTwoScore);
         }
     }
+    function setupChangesBtns() {
+        const cpaBtnElement = document.querySelector("#addplayer");
+        const cpdBtnElement = document.querySelector("#removeplayer");
+        const cTeamElement = document.querySelector("#playerdelete-team");
+        const cJersyElement = document.querySelector("#playerdelete-jersy");
+        const cAddPlayerElement = document.querySelector("#playeradd");
+        cpdBtnElement.onclick = () => {
+            let delTeam = cTeamElement.options[cTeamElement.selectedIndex].text;
+            let delJersy = cJersyElement.options[cJersyElement.selectedIndex].text;
+            let delChange = {};
+            switch (delTeam) {
+                case "Team 1": {
+                    delTeam = "Team One";
+                    break;
+                }
+                case "Team 2": {
+                    delTeam = "Team Two";
+                    break;
+                }
+            }
+            delChange.jersy = Number(delJersy);
+            delChange.team = delTeam;
+            if (!footballSimulator.dels.some(e => e.jersy == delChange.jersy && e.team == delChange.team)) {
+                footballSimulator.dels.push(delChange);
+            }
+            let newTitle = delChange.team + " " + String(delChange.jersy);
+            let newValue = delChange.team + "-" + String(delChange.jersy);
+            cAddPlayerElement.options[cAddPlayerElement.options.length] = new Option(newTitle, newValue);
+            console.log(movable);
+        };
+        cpaBtnElement.onclick = () => {
+            let out = cAddPlayerElement.value;
+            if (out == "") {
+                return;
+            }
+            else {
+                let title = out.split("-")[0];
+                let value = out.split("-")[1];
+                cAddPlayerElement.remove(cAddPlayerElement.selectedIndex);
+                let player = {};
+                player.team = title;
+                player.jersy = Number(value);
+                footballSimulator.dels = footballSimulator.dels.filter((e) => { e.jersy != player.jersy && e.team != player.team; });
+                var positions, playerSpeed, playerPrecision, jerseyColor;
+                if (player.team == "Team One") {
+                    positions = standardPositionsTeamOne;
+                    playerSpeed = [speedTeamOneMin, speedTeamOneMax];
+                    playerPrecision = [precisionTeamOneMin, precisionTeamOneMax];
+                    jerseyColor = jerseyColorTeamOne;
+                }
+                else {
+                    positions = standardPositionsTeamTwo;
+                    playerSpeed = [speedTeamTwoMin, speedTeamTwoMax];
+                    playerPrecision = [precisionTeamTwoMin, precisionTeamTwoMax];
+                    jerseyColor = jerseyColorTeamTwo;
+                }
+                const newPlayer = new footballSimulator.Player(positions[player.jersy - 1], Object.assign({}, positions[player.jersy - 1]), player.team, player.jersy, false, jerseyColor, randomIntFromInterval(playerSpeed[0], playerSpeed[1]), randomIntFromInterval(playerPrecision[0], playerPrecision[1]));
+                footballSimulator.players.push(newPlayer);
+                movable.push(newPlayer);
+                footballSimulator.adds = footballSimulator.adds + 1;
+                if (footballSimulator.adds == 1) {
+                    cpdBtnElement.disabled = true;
+                    cpaBtnElement.disabled = true;
+                    cTeamElement.disabled = true;
+                    cJersyElement.disabled = true;
+                    cAddPlayerElement.disabled = true;
+                    return;
+                }
+            }
+            //get value and transform to player
+        };
+    }
+    function setupPlayerStats() {
+        const psBtnElement = document.querySelector("#ps-btn");
+        const psTeamElement = document.querySelector("#ps-team");
+        const psPlayerElement = document.querySelector("#ps-player");
+        psBtnElement.onclick = () => {
+            var team = "";
+            var jersy = psPlayerElement.options[psPlayerElement.selectedIndex].text;
+            switch (psTeamElement.options[psTeamElement.selectedIndex].text) {
+                case "Team 1": {
+                    team = "Team One";
+                    break;
+                }
+                case "Team 2": {
+                    team = "Team Two";
+                    break;
+                }
+            }
+            var infoPlayer = footballSimulator.players.find((e) => e.team == team && e.jersy == Number(jersy));
+            if (infoPlayer != undefined) {
+                const psNumberParagraph = document.querySelector("#ps-number-show");
+                const psTeamParagraph = document.querySelector("#ps-team-show");
+                const psPrecisionParagraph = document.querySelector("#ps-precision-show");
+                const psSpeedParagraph = document.querySelector("#ps-speed-show");
+                psNumberParagraph.textContent = String(infoPlayer.jersy);
+                psTeamParagraph.textContent = String(infoPlayer.team);
+                psPrecisionParagraph.textContent = String(infoPlayer.precision);
+                psSpeedParagraph.textContent = String(infoPlayer.speed);
+            }
+        };
+    }
     function renderPlayerInformation(player) {
         if (player) {
             const playerJerseyNumberParagraph = document.querySelector(".player__jersy");
@@ -257,6 +379,10 @@ var footballSimulator;
             playerTeamParagraph.textContent = String(player.team);
         }
     }
+    function changes(element) {
+        let out = !footballSimulator.dels.some(e => e.jersy == element.jersy && e.team == element.team);
+        return out;
+    }
     function updateUI() {
         if (animationInProgress) {
             const ground = footballSimulator.getGround();
@@ -264,8 +390,9 @@ var footballSimulator;
             ground.clearRect(0, 0, canvasGround.width, canvasGround.height);
             footballSimulator.drawField();
             // setupReferees();
-            const players = [];
+            var players = [];
             let ball;
+            movable = movable.filter(changes);
             movable.forEach((mov) => {
                 if (mov instanceof footballSimulator.Player) {
                     players.push(mov);
@@ -275,6 +402,9 @@ var footballSimulator;
                     ball.draw();
                 }
             });
+            players = players.filter(changes);
+            console.log(movable);
+            footballSimulator.players = players;
             if (ball && players.length > 0) {
                 if (!ballOwnedByPlayer) {
                     for (let i = 0; i < movable.length; i++) {

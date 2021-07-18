@@ -2,7 +2,7 @@
 var footballSimulator;
 (function (footballSimulator) {
     let canvasGround;
-    let ground;
+    // let ground: CanvasRenderingContext2D;
     function getCanvas() {
         if (!canvasGround) {
             canvasGround = document.getElementById("playground");
@@ -23,7 +23,8 @@ var footballSimulator;
     function drawField() {
         const canvasGround = getCanvas();
         const ground = getGround();
-        ground.fillStyle = "green";
+        ground.fillStyle = "darkgreen";
+        ground.fill();
         ground.fillRect(0, 0, canvasGround.width, canvasGround.height);
         ground.save();
         ground.beginPath();

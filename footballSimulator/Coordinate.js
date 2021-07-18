@@ -2,6 +2,8 @@
 var footballSimulator;
 (function (footballSimulator) {
     class Coordinate {
+        x;
+        y;
         constructor(xCoord = 0, yCoord = 0) {
             this.x = xCoord;
             this.y = yCoord;

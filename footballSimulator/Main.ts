@@ -19,12 +19,22 @@ namespace footballSimulator {
   const groundWidth = canvasGround.width;
   const groundHeight = canvasGround.height;
 
-  const movable: Movable[] = [];
+  var movable: Movable[] = [];
   let ballOwnedByPlayer = false;
   let playerWithTheBall: Player | undefined;
 
   let teamOneScore: number = 0;
   let teamTwoScore: number = 0;
+
+  export interface change {
+    jersy: number;
+    team: string;
+  }
+
+  export let players: Player[] = [];
+
+  export let adds: number = 0;
+  export let dels: Array<change> = [];
 
   const leftGoal = [
     new Coordinate(50, 330),
@@ -68,6 +78,17 @@ namespace footballSimulator {
     new Coordinate((groundWidth / 110) * 95, (groundHeight / 75) * 17),
   ];
 
+  var jerseyColorTeamOne: string;
+  var jerseyColorTeamTwo: string;
+  var speedTeamOneMin: number;
+  var speedTeamOneMax: number;
+  var speedTeamTwoMin: number;
+  var speedTeamTwoMax: number;
+  var precisionTeamOneMin: number;
+  var precisionTeamOneMax: number;
+  var precisionTeamTwoMin: number;
+  var precisionTeamTwoMax: number;
+
   let animationInProgress = true;
 
   drawField();
@@ -110,6 +131,8 @@ namespace footballSimulator {
     playerPrecision: number[],
     playerSpeed: number[]
   ): void {
+    var players: Player[] = [];
+
     for (let i = 1; i <= 11; i++) {
       const player = new Player(
         positions[i - 1],
@@ -121,10 +144,17 @@ namespace footballSimulator {
         randomIntFromInterval(playerSpeed[0], playerSpeed[1]),
         randomIntFromInterval(playerPrecision[0], playerPrecision[1])
       );
-      console.log(player);
+
+      players.push(player);
+    }
+
+    players = players.filter(changes);
+
+    players.forEach((player) => {
+      console.log(player)
       player.draw();
       movable.push(player);
-    }
+    });
   }
 
   function setupReferees(): void {
@@ -200,16 +230,16 @@ namespace footballSimulator {
       "team-two-speed-max"
     ) as HTMLInputElement;
 
-    const jerseyColorTeamOne = jerseyColorTeamOneInput.value;
-    const jerseyColorTeamTwo = jerseyColorTeamTwoInput.value;
-    const speedTeamOneMin = Number(speedTeamOneInputMin.value);
-    const speedTeamOneMax = Number(speedTeamOneInputMax.value);
-    const speedTeamTwoMin = Number(speedTeamTwoInputMin.value);
-    const speedTeamTwoMax = Number(speedTeamTwoInputMax.value);
-    const precisionTeamOneMin = Number(precisionTeamOneInputMin.value);
-    const precisionTeamOneMax = Number(precisionTeamOneInputMax.value);
-    const precisionTeamTwoMin = Number(precisionTeamTwoInputMin.value);
-    const precisionTeamTwoMax = Number(precisionTeamTwoInputMax.value);
+    jerseyColorTeamOne = jerseyColorTeamOneInput.value;
+    jerseyColorTeamTwo = jerseyColorTeamTwoInput.value;
+    speedTeamOneMin = Number(speedTeamOneInputMin.value);
+    speedTeamOneMax = Number(speedTeamOneInputMax.value);
+    speedTeamTwoMin = Number(speedTeamTwoInputMin.value);
+    speedTeamTwoMax = Number(speedTeamTwoInputMax.value);
+    precisionTeamOneMin = Number(precisionTeamOneInputMin.value);
+    precisionTeamOneMax = Number(precisionTeamOneInputMax.value);
+    precisionTeamTwoMin = Number(precisionTeamTwoInputMin.value);
+    precisionTeamTwoMax = Number(precisionTeamTwoInputMax.value);
 
     setupTeams(
       jerseyColorTeamOne,
@@ -228,6 +258,9 @@ namespace footballSimulator {
     canvasGround.classList.toggle("hidden");
     startGameButton.classList.toggle("hidden");
     resetGameButton.classList.toggle("hidden");
+
+    setupPlayerStats();
+    setupChangesBtns();
 
     gameStarted = true;
   }
@@ -376,6 +409,172 @@ namespace footballSimulator {
     }
   }
 
+  function setupChangesBtns() {
+    const cpaBtnElement = document.querySelector(
+      "#addplayer"
+    ) as HTMLButtonElement;
+
+    const cpdBtnElement = document.querySelector(
+      "#removeplayer"
+    ) as HTMLButtonElement;
+
+    const cTeamElement = document.querySelector(
+      "#playerdelete-team"
+    ) as HTMLSelectElement;
+
+    const cJersyElement = document.querySelector(
+      "#playerdelete-jersy"
+    ) as HTMLSelectElement;
+
+    const cAddPlayerElement = document.querySelector(
+      "#playeradd"
+    ) as HTMLSelectElement;
+
+    cpdBtnElement.onclick = () => {
+
+      let delTeam = cTeamElement.options[cTeamElement.selectedIndex].text;
+      let delJersy = cJersyElement.options[cJersyElement.selectedIndex].text;
+
+      let delChange = {} as footballSimulator.change;
+
+      switch(delTeam) {
+        case "Team 1": {
+          delTeam = "Team One";
+          break;
+        }
+        case "Team 2": {
+          delTeam = "Team Two";
+          break;
+        }
+      }
+
+      delChange.jersy = Number(delJersy);
+      delChange.team = delTeam;
+
+      if (!footballSimulator.dels.some(e => e.jersy == delChange.jersy && e.team == delChange.team)) {
+        footballSimulator.dels.push(delChange);     
+      }
+
+      let newTitle = delChange.team + " " + String(delChange.jersy);
+      let newValue = delChange.team + "-" + String(delChange.jersy);
+      cAddPlayerElement.options[cAddPlayerElement.options.length] = new Option(newTitle, newValue);
+      console.log(movable);
+  }
+    cpaBtnElement.onclick = () => {
+      let out = cAddPlayerElement.value
+      if (out == "") {
+        return
+      } else {
+        let title = out.split("-")[0]
+        let value = out.split("-")[1]
+
+        cAddPlayerElement.remove(cAddPlayerElement.selectedIndex); 
+
+        let player = {} as footballSimulator.change;
+        player.team = title;
+        player.jersy = Number(value);
+
+        footballSimulator.dels = footballSimulator.dels.filter((e) => { e.jersy != player.jersy && e.team != player.team });
+
+        var positions, playerSpeed, playerPrecision, jerseyColor;
+
+        if (player.team == "Team One") {
+          positions = standardPositionsTeamOne;
+          playerSpeed = [speedTeamOneMin, speedTeamOneMax];
+          playerPrecision = [precisionTeamOneMin, precisionTeamOneMax];
+          jerseyColor = jerseyColorTeamOne;
+        } else {
+          positions = standardPositionsTeamTwo;
+          playerSpeed = [speedTeamTwoMin, speedTeamTwoMax];
+          playerPrecision = [precisionTeamTwoMin, precisionTeamTwoMax];
+          jerseyColor = jerseyColorTeamTwo;
+        }
+
+        const newPlayer = new Player(
+          positions[player.jersy - 1],
+          Object.assign({}, positions[player.jersy - 1]),
+          player.team,
+          player.jersy,
+          false,
+          jerseyColor,
+          randomIntFromInterval(playerSpeed[0], playerSpeed[1]),
+          randomIntFromInterval(playerPrecision[0], playerPrecision[1])
+        );
+
+        players.push(newPlayer);
+        movable.push(newPlayer);
+
+        adds = adds + 1;
+
+        if (adds == 4) { // only 4 changes on the game
+          cpdBtnElement.disabled=true;
+          cpaBtnElement.disabled=true;
+          cTeamElement.disabled=true;
+          cJersyElement.disabled=true;
+          cAddPlayerElement.disabled=true;
+          return
+        }
+
+      }
+      //get value and transform to player
+    }
+}
+
+  function setupPlayerStats() {
+    const psBtnElement = document.querySelector(
+      "#ps-btn"
+    ) as HTMLButtonElement;
+
+    const psTeamElement = document.querySelector(
+      "#ps-team"
+    ) as HTMLSelectElement;
+
+    const psPlayerElement = document.querySelector(
+      "#ps-player"
+    ) as HTMLSelectElement;
+
+    psBtnElement.onclick = () => {
+
+      var team: String = "";
+      var jersy: String = psPlayerElement.options[psPlayerElement.selectedIndex].text;
+
+      switch(psTeamElement.options[psTeamElement.selectedIndex].text) {
+        case "Team 1": {
+          team = "Team One";
+          break;
+        }
+        case "Team 2": {
+          team = "Team Two";
+          break;
+        }
+      }
+      
+      var infoPlayer = footballSimulator.players.find((e) => e.team == team && e.jersy == Number(jersy));
+      
+      if (infoPlayer != undefined) {
+        const psNumberParagraph = document.querySelector(
+          "#ps-number-show"
+        ) as HTMLParagraphElement;
+        const psTeamParagraph = document.querySelector(
+          "#ps-team-show"
+        ) as HTMLParagraphElement;
+        const psPrecisionParagraph = document.querySelector(
+          "#ps-precision-show"
+        ) as HTMLParagraphElement;
+        const psSpeedParagraph = document.querySelector(
+          "#ps-speed-show"
+        ) as HTMLParagraphElement;
+
+        psNumberParagraph.textContent = String(infoPlayer.jersy);
+        psTeamParagraph.textContent = String(infoPlayer.team);
+        psPrecisionParagraph.textContent = String(infoPlayer.precision);
+        psSpeedParagraph.textContent = String(infoPlayer.speed);
+      }      
+
+    }
+
+  }
+
   function renderPlayerInformation(player: Player): void {
     if (player) {
       const playerJerseyNumberParagraph = document.querySelector(
@@ -399,6 +598,12 @@ namespace footballSimulator {
     }
   }
 
+  function changes(element: any) {
+
+    let out = !footballSimulator.dels.some(e => e.jersy == element.jersy && e.team == element.team );
+    return out
+  }
+
   function updateUI(): void {
     if (animationInProgress) {
       const ground = getGround();
@@ -407,8 +612,11 @@ namespace footballSimulator {
       ground.clearRect(0, 0, canvasGround.width, canvasGround.height);
       drawField();
       // setupReferees();
-      const players: Player[] = [];
+      var players: Player[] = [];
+
       let ball: Ball | undefined;
+
+      movable = movable.filter(changes);
 
       movable.forEach((mov) => {
         if (mov instanceof Player) {
@@ -418,6 +626,12 @@ namespace footballSimulator {
           ball.draw();
         }
       });
+
+      players = players.filter(changes);
+
+      console.log(movable);
+
+      footballSimulator.players = players;
 
       if (ball && players.length > 0) {
         if (!ballOwnedByPlayer) {

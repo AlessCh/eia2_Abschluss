@@ -2,6 +2,8 @@
 var footballSimulator;
 (function (footballSimulator) {
     class Referee {
+        currentPosition;
+        role;
         constructor(position, role) {
             this.currentPosition = position;
             this.role = role;
