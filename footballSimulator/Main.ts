@@ -1,4 +1,6 @@
 namespace footballSimulator {
+
+  //window.addEventListener("load", handleLoad);
   const canvasGround = document.getElementById(
     "playground"
   ) as HTMLCanvasElement;
@@ -89,6 +91,9 @@ namespace footballSimulator {
   var precisionTeamTwoMin: number;
   var precisionTeamTwoMax: number;
 
+  //function handleLoad(): void {
+  //}
+  
   let animationInProgress = true;
 
   drawField();
@@ -437,7 +442,7 @@ namespace footballSimulator {
 
       let delChange = {} as footballSimulator.change;
 
-      switch(delTeam) {
+      switch (delTeam) {
         case "Team 1": {
           delTeam = "Team One";
           break;
@@ -452,14 +457,14 @@ namespace footballSimulator {
       delChange.team = delTeam;
 
       if (!footballSimulator.dels.some(e => e.jersy == delChange.jersy && e.team == delChange.team)) {
-        footballSimulator.dels.push(delChange);     
+        footballSimulator.dels.push(delChange);
       }
 
       let newTitle = delChange.team + " " + String(delChange.jersy);
       let newValue = delChange.team + "-" + String(delChange.jersy);
       cAddPlayerElement.options[cAddPlayerElement.options.length] = new Option(newTitle, newValue);
       console.log(movable);
-  }
+    }
     cpaBtnElement.onclick = () => {
       let out = cAddPlayerElement.value
       if (out == "") {
@@ -468,7 +473,7 @@ namespace footballSimulator {
         let title = out.split("-")[0]
         let value = out.split("-")[1]
 
-        cAddPlayerElement.remove(cAddPlayerElement.selectedIndex); 
+        cAddPlayerElement.remove(cAddPlayerElement.selectedIndex);
 
         let player = {} as footballSimulator.change;
         player.team = title;
@@ -507,18 +512,18 @@ namespace footballSimulator {
         adds = adds + 1;
 
         if (adds == 4) { // only 4 changes on the game
-          cpdBtnElement.disabled=true;
-          cpaBtnElement.disabled=true;
-          cTeamElement.disabled=true;
-          cJersyElement.disabled=true;
-          cAddPlayerElement.disabled=true;
+          cpdBtnElement.disabled = true;
+          cpaBtnElement.disabled = true;
+          cTeamElement.disabled = true;
+          cJersyElement.disabled = true;
+          cAddPlayerElement.disabled = true;
           return
         }
 
       }
       //get value and transform to player
     }
-}
+  }
 
   function setupPlayerStats() {
     const psBtnElement = document.querySelector(
@@ -538,7 +543,7 @@ namespace footballSimulator {
       var team: String = "";
       var jersy: String = psPlayerElement.options[psPlayerElement.selectedIndex].text;
 
-      switch(psTeamElement.options[psTeamElement.selectedIndex].text) {
+      switch (psTeamElement.options[psTeamElement.selectedIndex].text) {
         case "Team 1": {
           team = "Team One";
           break;
@@ -548,9 +553,9 @@ namespace footballSimulator {
           break;
         }
       }
-      
+
       var infoPlayer = footballSimulator.players.find((e) => e.team == team && e.jersy == Number(jersy));
-      
+
       if (infoPlayer != undefined) {
         const psNumberParagraph = document.querySelector(
           "#ps-number-show"
@@ -569,7 +574,7 @@ namespace footballSimulator {
         psTeamParagraph.textContent = String(infoPlayer.team);
         psPrecisionParagraph.textContent = String(infoPlayer.precision);
         psSpeedParagraph.textContent = String(infoPlayer.speed);
-      }      
+      }
 
     }
 
@@ -600,7 +605,7 @@ namespace footballSimulator {
 
   function changes(element: any) {
 
-    let out = !footballSimulator.dels.some(e => e.jersy == element.jersy && e.team == element.team );
+    let out = !footballSimulator.dels.some(e => e.jersy == element.jersy && e.team == element.team);
     return out
   }
 

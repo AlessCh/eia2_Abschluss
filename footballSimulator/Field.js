@@ -1,4 +1,5 @@
 "use strict";
+//inspiration to the field design from lisa herbig https://lisaherbig.github.io/EIA2-SoSe2021/Endaufgabe_Fu%C3%9FballSimulation/Simulation.html
 var footballSimulator;
 (function (footballSimulator) {
     let canvasGround;
@@ -23,135 +24,142 @@ var footballSimulator;
     function drawField() {
         const canvasGround = getCanvas();
         const ground = getGround();
+        //inner field
+        ground.save();
+        ground.beginPath();
         ground.fillStyle = "darkgreen";
-        ground.fill();
         ground.fillRect(0, 0, canvasGround.width, canvasGround.height);
-        ground.save();
-        ground.beginPath();
-        ground.moveTo((canvasGround.width / 110) * 5, (canvasGround.height / 75) * 5);
-        ground.lineTo((canvasGround.width / 110) * 105, (canvasGround.height / 75) * 5);
-        ground.lineTo((canvasGround.width / 110) * 105, (canvasGround.height / 75) * 70);
-        ground.lineTo((canvasGround.width / 110) * 5, (canvasGround.height / 75) * 70);
+        ground.strokeStyle = "white";
+        ground.lineWidth = 2;
+        ground.moveTo((canvasGround.width / 110) * 5, //52.7
+        (canvasGround.height / 75) * 5 //50
+        );
+        ground.lineTo((canvasGround.width / 110) * 105, //1107
+        (canvasGround.height / 75) * 5 //50
+        );
+        ground.lineTo((canvasGround.width / 110) * 105, //1107
+        (canvasGround.height / 75) * 70 //709
+        );
+        ground.lineTo((canvasGround.width / 110) * 5, //52.7
+        (canvasGround.height / 75) * 70 //709
+        );
         ground.closePath();
-        ground.strokeStyle = "white";
-        ground.lineWidth = 5;
+        ground.fill();
         ground.stroke();
         ground.restore();
+        ///done
+        //middle line
         ground.save();
         ground.beginPath();
-        ground.moveTo(canvasGround.width / 2, (canvasGround.height / 75) * 5);
-        ground.lineTo(canvasGround.width / 2, (canvasGround.height / 75) * 70);
+        ground.strokeStyle = "white";
+        ground.lineWidth = 2;
+        ground.moveTo(canvasGround.width / 2, (canvasGround.height / 75) * 5); //580,50
+        ground.lineTo(canvasGround.width / 2, (canvasGround.height / 75) * 70); //580,709
         ground.closePath();
-        ground.strokeStyle = "white";
-        ground.lineWidth = 5;
         ground.stroke();
         ground.restore();
+        //done
+        //middle circle
         ground.save();
         ground.beginPath();
-        ground.arc(canvasGround.width / 2, canvasGround.height / 2, 4, 0, 2 * Math.PI);
         ground.strokeStyle = "white";
-        ground.lineWidth = 5;
-        ground.stroke();
-        ground.restore();
-        ground.save();
-        ground.beginPath();
-        ground.arc(canvasGround.width / 2, canvasGround.height / 2, (canvasGround.width / 110) * 9, 0, 2 * Math.PI);
+        ground.lineWidth = 2;
+        ground.arc(canvasGround.width / 2, //580
+        canvasGround.height / 2, //380  --> (580, 380)  middle of the field
+        (canvasGround.width / 110) * 8, 0, 2 * Math.PI); //circle in middle with size approx 84
         ground.closePath();
-        ground.strokeStyle = "white";
-        ground.lineWidth = 5;
         ground.stroke();
         ground.restore();
+        //done
+        //penalty area
         function drawPenaltyArea(_outerLine, _distance) {
             ground.save();
             ground.beginPath();
-            ground.moveTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 + 110);
-            ground.lineTo((canvasGround.width / 110) * _distance, canvasGround.height / 2 + 110);
-            ground.lineTo((canvasGround.width / 110) * _distance, canvasGround.height / 2 - 110);
-            ground.lineTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 - 110);
-            ground.closePath();
             ground.strokeStyle = "white";
-            ground.lineWidth = 5;
+            ground.lineWidth = 2;
+            ground.moveTo((canvasGround.width / 110) * _outerLine, //10.54 * outerline
+            canvasGround.height / 2 + 110 //490
+            );
+            ground.lineTo((canvasGround.width / 110) * _distance, //10.54 * distance
+            canvasGround.height / 2 + 110 //490
+            );
+            ground.lineTo((canvasGround.width / 110) * _distance, //10.54 * distance
+            canvasGround.height / 2 - 110 //270
+            );
+            ground.lineTo((canvasGround.width / 110) * _outerLine, ////10.54 * outerline
+            canvasGround.height / 2 - 110 //270
+            );
+            ground.closePath();
             ground.stroke();
             ground.restore();
         }
-        drawPenaltyArea(5, 21.5);
-        drawPenaltyArea(105, 88.5);
+        //done
+        drawPenaltyArea(5, 21.5); //positions x/y, field drawn on left side
+        drawPenaltyArea(105, 88.5); //field drawn on right side
+        //goal area
         function drawGoalArea(_outerLine, _distance) {
             ground.save();
             ground.beginPath();
-            ground.moveTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 + 50);
-            ground.lineTo((canvasGround.width / 110) * _distance, canvasGround.height / 2 + 50);
-            ground.lineTo((canvasGround.width / 110) * _distance, canvasGround.height / 2 - 50);
-            ground.lineTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 - 50);
-            ground.closePath();
             ground.strokeStyle = "white";
-            ground.lineWidth = 5;
+            ground.lineWidth = 2;
+            ground.moveTo((canvasGround.width / 110) * _outerLine, //10.54 * outerline
+            canvasGround.height / 2 + 50 //430
+            );
+            ground.lineTo((canvasGround.width / 110) * _distance, //10.54 * distance
+            canvasGround.height / 2 + 50 //430
+            );
+            ground.lineTo((canvasGround.width / 110) * _distance, //10.54 * distance
+            canvasGround.height / 2 - 50 //330
+            );
+            ground.lineTo((canvasGround.width / 110) * _outerLine, //10.54 * outerline
+            canvasGround.height / 2 - 50 //330
+            );
+            ground.closePath();
             ground.stroke();
             ground.restore();
         }
-        drawGoalArea(5, 10.5);
-        drawGoalArea(105, 99.5);
+        //done
+        drawGoalArea(5, 10.5); //left
+        drawGoalArea(105, 99.5); //right
+        //circle for penalty area
         function drawArcPentaltyArea(_start, _anticlockwise) {
             ground.save();
             ground.beginPath();
-            ground.arc((canvasGround.width / 110) * _start, canvasGround.height / 2, 50, 90 * (Math.PI / 180), 270 * (Math.PI / 180), _anticlockwise);
-            ground.closePath();
             ground.strokeStyle = "white";
-            ground.lineWidth = 5;
+            ground.lineWidth = 2;
+            ground.arc((canvasGround.width / 110) * _start, //10.54*start
+            canvasGround.height / 2, //380
+            60, //size 60
+            90 * (Math.PI / 180), 270 * (Math.PI / 180), _anticlockwise //draws the arc counter-clockwise between the start and end angles
+            );
+            ground.closePath();
             ground.stroke();
             ground.restore();
         }
-        drawArcPentaltyArea(21.5, true);
-        drawArcPentaltyArea(88.5, false);
-        function drawPentaltySpot(_center) {
-            ground.save();
-            ground.beginPath();
-            ground.arc((canvasGround.width / 110) * _center, canvasGround.height / 2, 4, 0, 360);
-            ground.closePath();
-            ground.fillStyle = "white";
-            ground.lineWidth = 5;
-            ground.fill();
-            ground.restore();
-        }
-        drawPentaltySpot(15.75);
-        drawPentaltySpot(94.25);
+        //done
+        drawArcPentaltyArea(21.5, true); //left
+        drawArcPentaltyArea(88.5, false); //right
+        //goal
         function drawGoal(_outerLine, _end) {
             ground.save();
             ground.beginPath();
-            ground.moveTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 + 40);
-            ground.lineTo((canvasGround.width / 110) * _end, canvasGround.height / 2 + 40);
-            ground.lineTo((canvasGround.width / 110) * _end, canvasGround.height / 2 - 40);
-            ground.lineTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 - 40);
-            ground.closePath();
             ground.strokeStyle = "white";
-            ground.lineWidth = 5;
+            ground.lineWidth = 2;
+            ground.moveTo((canvasGround.width / 110) * _outerLine, //10.54 * outerline
+            canvasGround.height / 2 + 40 //420
+            );
+            ground.lineTo((canvasGround.width / 110) * _end, canvasGround.height / 2 + 40 //420
+            );
+            ground.lineTo((canvasGround.width / 110) * _end, canvasGround.height / 2 - 40 //340
+            );
+            ground.lineTo((canvasGround.width / 110) * _outerLine, canvasGround.height / 2 - 40 //340
+            );
+            ground.closePath();
             ground.stroke();
             ground.restore();
         }
-        drawGoal(5, 1);
-        drawGoal(105, 109);
-        function drawNet(_distance1, _distance2, _distance3, _distance4, _distance5) {
-            ground.save();
-            ground.beginPath();
-            ground.moveTo((canvasGround.width / 110) * _distance2, canvasGround.height / 2 + 40);
-            ground.lineTo((canvasGround.width / 110) * _distance2, canvasGround.height / 2 - 40);
-            ground.moveTo((canvasGround.width / 110) * _distance3, canvasGround.height / 2 - 40);
-            ground.lineTo((canvasGround.width / 110) * _distance3, canvasGround.height / 2 + 40);
-            ground.moveTo((canvasGround.width / 110) * _distance4, canvasGround.height / 2 + 40);
-            ground.lineTo((canvasGround.width / 110) * _distance4, canvasGround.height / 2 - 40);
-            ground.moveTo((canvasGround.width / 110) * _distance1, canvasGround.height / 2 + 20);
-            ground.lineTo((canvasGround.width / 110) * _distance5, canvasGround.height / 2 + 20);
-            ground.moveTo((canvasGround.width / 110) * _distance1, canvasGround.height / 2 + 0);
-            ground.lineTo((canvasGround.width / 110) * _distance5, canvasGround.height / 2 + 0);
-            ground.moveTo((canvasGround.width / 110) * _distance1, canvasGround.height / 2 - 20);
-            ground.lineTo((canvasGround.width / 110) * _distance5, canvasGround.height / 2 - 20);
-            ground.closePath();
-            ground.strokeStyle = "white";
-            ground.stroke();
-            ground.restore();
-        }
-        drawNet(1, 2, 3, 4, 5);
-        drawNet(109, 108, 107, 106, 105);
+        drawGoal(5, 1); //left
+        drawGoal(105, 109); //right
     }
     footballSimulator.drawField = drawField;
 })(footballSimulator || (footballSimulator = {}));

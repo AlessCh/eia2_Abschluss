@@ -2,15 +2,6 @@
 var footballSimulator;
 (function (footballSimulator) {
     class Player {
-        currentPosition;
-        defaultPosition;
-        team;
-        jersy;
-        ballOwner;
-        jersyColor;
-        speed;
-        precision;
-        triedToGetBall;
         constructor(currentplayerPosition, defaultplayerPosition, team, jersy, ballOwner, jerseyColor, speed, precision) {
             this.currentPosition = currentplayerPosition;
             this.defaultPosition = defaultplayerPosition;
@@ -30,16 +21,18 @@ var footballSimulator;
             const ground = footballSimulator.getGround();
             ground.save();
             ground.beginPath();
+            ground.fillStyle = this.jersyColor;
             ground.arc(this.currentPosition.x, this.currentPosition.y, 20, 0, Math.PI * 2);
             ground.closePath();
-            ground.fillStyle = this.jersyColor;
             ground.fill();
             ground.restore();
             // Jersey Number
             ground.save();
+            ground.beginPath();
             ground.fillStyle = "black";
             ground.font = "20px serif";
-            ground.fillText(String(this.jersy), this.currentPosition.x, this.currentPosition.y, 20);
+            ground.fillText(String(this.jersy), this.currentPosition.x - 7, this.currentPosition.y + 5, 20);
+            ground.closePath();
             ground.restore();
             // Player range
             // ground.save();

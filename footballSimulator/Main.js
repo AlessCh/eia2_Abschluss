@@ -1,6 +1,7 @@
 "use strict";
 var footballSimulator;
 (function (footballSimulator) {
+    //window.addEventListener("load", handleLoad);
     const canvasGround = document.getElementById("playground");
     const playerInfo = document.getElementById("playerinfo");
     const gameDetails = document.getElementById("gamedetails");
@@ -69,6 +70,8 @@ var footballSimulator;
     var precisionTeamOneMax;
     var precisionTeamTwoMin;
     var precisionTeamTwoMax;
+    //function handleLoad(): void {
+    //}
     let animationInProgress = true;
     footballSimulator.drawField();
     setupReferees();
@@ -325,7 +328,7 @@ var footballSimulator;
                 footballSimulator.players.push(newPlayer);
                 movable.push(newPlayer);
                 footballSimulator.adds = footballSimulator.adds + 1;
-                if (footballSimulator.adds == 1) {
+                if (footballSimulator.adds == 4) { // only 4 changes on the game
                     cpdBtnElement.disabled = true;
                     cpaBtnElement.disabled = true;
                     cTeamElement.disabled = true;
