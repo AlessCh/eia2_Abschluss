@@ -1,7 +1,7 @@
 "use strict";
 var footballSimulator;
 (function (footballSimulator) {
-    //window.addEventListener("load", handleLoad);
+    window.addEventListener("load", handleLoad);
     const canvasGround = document.getElementById("playground");
     const playerInfo = document.getElementById("playerinfo");
     const gameDetails = document.getElementById("gamedetails");
@@ -19,20 +19,40 @@ var footballSimulator;
     let playerWithTheBall;
     let teamOneScore = 0;
     let teamTwoScore = 0;
+    let animationInProgress = true;
+    let playerAnimator = window.setInterval(updateUI, 100);
     footballSimulator.players = [];
     footballSimulator.adds = 0;
     footballSimulator.dels = [];
+    function handleLoad() {
+        footballSimulator.drawField();
+        setupReferees();
+        setupBall();
+        startGameButton.addEventListener("click", startGame);
+        resetGameButton.addEventListener("click", resetGame);
+        canvasGround.addEventListener("click", kickBall);
+        document.addEventListener("keyup", (event) => {
+            const key = event.key;
+            console.log(event);
+            if ("Escape" === key && gameStarted) {
+                resetGame();
+            }
+            else if ("Enter" === key && !gameStarted) {
+                startGame();
+            }
+        });
+    }
     const leftGoal = [
         new footballSimulator.Coordinate(50, 330),
         new footballSimulator.Coordinate(50, 410),
         new footballSimulator.Coordinate(10, 330),
-        new footballSimulator.Coordinate(10, 410),
+        new footballSimulator.Coordinate(10, 410)
     ];
     const rightGoal = [
         new footballSimulator.Coordinate(1110, 330),
         new footballSimulator.Coordinate(1110, 410),
         new footballSimulator.Coordinate(1150, 330),
-        new footballSimulator.Coordinate(1150, 410),
+        new footballSimulator.Coordinate(1150, 410)
     ];
     const standardPositionsTeamOne = [
         new footballSimulator.Coordinate((groundWidth / 110) * 10, groundHeight / 2 + 30),
@@ -45,7 +65,7 @@ var footballSimulator;
         new footballSimulator.Coordinate((groundWidth / 110) * 75, (groundHeight / 75) * 15),
         new footballSimulator.Coordinate((groundWidth / 110) * 75, (groundHeight / 75) * 68),
         new footballSimulator.Coordinate((groundWidth / 110) * 88.5, groundHeight / 2 - 50),
-        new footballSimulator.Coordinate((groundWidth / 110) * 88.5, groundHeight / 2 + 110),
+        new footballSimulator.Coordinate((groundWidth / 110) * 88.5, groundHeight / 2 + 110)
     ];
     const standardPositionsTeamTwo = [
         new footballSimulator.Coordinate((groundWidth / 110) * 100, groundHeight / 2 + 30),
@@ -58,7 +78,7 @@ var footballSimulator;
         new footballSimulator.Coordinate((groundWidth / 110) * 21.5, groundHeight / 2 - 50),
         new footballSimulator.Coordinate((groundWidth / 110) * 35, (groundHeight / 75) * 15),
         new footballSimulator.Coordinate((groundWidth / 110) * 95, (groundHeight / 75) * 65),
-        new footballSimulator.Coordinate((groundWidth / 110) * 95, (groundHeight / 75) * 17),
+        new footballSimulator.Coordinate((groundWidth / 110) * 95, (groundHeight / 75) * 17)
     ];
     var jerseyColorTeamOne;
     var jerseyColorTeamTwo;
@@ -70,31 +90,38 @@ var footballSimulator;
     var precisionTeamOneMax;
     var precisionTeamTwoMin;
     var precisionTeamTwoMax;
-    //function handleLoad(): void {
-    //}
-    let animationInProgress = true;
-    footballSimulator.drawField();
-    setupReferees();
-    setupBall();
-    let playerAnimator = window.setInterval(updateUI, 100);
-    function setupTeams(teamOneColor = "#00ffaa", teamTwoColor = "#d703fc", teamOneplayerPrecision = [10, 10], teamOneplayerSpeed = [10, 10], teamTwoplayerPrecision = [10, 10], teamTwoplayerSpeed = [10, 10]) {
-        setupTeam("Team One", standardPositionsTeamOne, teamOneColor, teamOneplayerPrecision, teamOneplayerSpeed);
-        setupTeam("Team Two", standardPositionsTeamTwo, teamTwoColor, teamTwoplayerPrecision, teamTwoplayerSpeed);
+    function setupTeams(teamOneColor = "#00ffaa", //default
+    teamTwoColor = "#d703fc", //default
+    teamOneplayerPrecision = [10, 10], teamOneplayerSpeed = [10, 10], teamTwoplayerPrecision = [10, 10], teamTwoplayerSpeed = [10, 10]) {
+        setupTeam("Team One", standardPositionsTeamOne, //coordinates from array for team one
+        teamOneColor, teamOneplayerPrecision, teamOneplayerSpeed);
+        setupTeam("Team Two", standardPositionsTeamTwo, //coordinates from array for team two
+        teamTwoColor, teamTwoplayerPrecision, teamTwoplayerSpeed);
     }
     function randomIntFromInterval(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+        //Math.floor returns greatest integer lessn than or equal to its numeric argument
+        //math.random returns pseudorandom number between 0 and 1
     }
     function setupTeam(teamName, positions, jerseyColor, playerPrecision, playerSpeed) {
         var players = [];
         for (let i = 1; i <= 11; i++) {
-            const player = new footballSimulator.Player(positions[i - 1], Object.assign({}, positions[i - 1]), teamName, i, false, jerseyColor, randomIntFromInterval(playerSpeed[0], playerSpeed[1]), randomIntFromInterval(playerPrecision[0], playerPrecision[1]));
-            players.push(player);
+            const player = new footballSimulator.Player(positions[i - 1], //parameter positions: coordinate
+            Object.assign({}, positions[i - 1]), //object.assign copies all values of all counting attributes from 1 or more object sources in one target object
+            teamName, //parameter
+            i, //let i = number
+            false, jerseyColor, //parameter jerseycolor = string
+            randomIntFromInterval(playerSpeed[0], playerSpeed[1]), //from function randomIntfromInterval (min,max): number
+            randomIntFromInterval(playerPrecision[0], playerPrecision[1]) //from function randomIntfromInterval (min,max): number
+            );
+            players.push(player); //pushes to end of array and returns new length of array
         }
-        players = players.filter(changes);
+        players = players.filter(changes); //returns the elements of array that meet the condition specified in callback func // func -> changes
+        //players is a local var
         players.forEach((player) => {
-            console.log(player);
-            player.draw();
-            movable.push(player);
+            console.log(player); //console output
+            player.draw(); //draw method
+            movable.push(player); //push method
         });
     }
     function setupReferees() {
@@ -114,21 +141,9 @@ var footballSimulator;
         ball.draw();
         movable.push(ball);
     }
-    canvasGround.addEventListener("click", kickBall);
-    startGameButton.addEventListener("click", startGame);
-    resetGameButton.addEventListener("click", resetGame);
-    document.addEventListener("keyup", (event) => {
-        const key = event.key;
-        console.log(event);
-        if ("Escape" === key && gameStarted) {
-            resetGame();
-        }
-        else if ("Enter" === key && !gameStarted) {
-            startGame();
-        }
-    });
     function startGame() {
-        const jerseyColorTeamOneInput = document.getElementById("color-team-one");
+        const jerseyColorTeamOneInput = document.getElementById(//let inputs be htmlinput elements
+        "color-team-one");
         const jerseyColorTeamTwoInput = document.getElementById("color-team-two");
         const precisionTeamOneInputMin = document.getElementById("team-one-precision-min");
         const precisionTeamOneInputMax = document.getElementById("team-one-precision-max");
@@ -171,8 +186,8 @@ var footballSimulator;
             xBoarders.add(coord.x);
             yBoarders.add(coord.y);
         });
-        const xValueArr = Array.from(xBoarders);
-        xValueArr.sort((a, b) => a - b);
+        const xValueArr = Array.from(xBoarders); //Array.from creates array from iterable object -> array ähnliches object converted to array
+        xValueArr.sort((a, b) => a - b); //sort = sorts an array in place, mutates array and returns reference to same array
         const yValueArr = Array.from(yBoarders);
         yValueArr.sort((a, b) => a - b);
         if (coordinate.x >= xValueArr[0] &&
@@ -188,7 +203,8 @@ var footballSimulator;
         const x = event.clientX -
             rect.left +
             (Math.random() > 0.5
-                ? Math.abs(playerWithTheBall?.precision
+                ? Math.abs(//Bedingte Auswertung a?b : c
+                playerWithTheBall?.precision
                     ? 100 - playerWithTheBall?.precision ?? 0 * 1
                     : 0)
                 : Math.abs(playerWithTheBall?.precision
@@ -206,7 +222,7 @@ var footballSimulator;
         console.log(x, y);
         const newBallCoordinates = new footballSimulator.Coordinate(x, y);
         for (let i = 0; i < movable.length; i++) {
-            if (movable[i] instanceof footballSimulator.Ball) {
+            if (movable[i] instanceof footballSimulator.Ball) { //expected output truw
                 const ball = movable[i];
                 let ballMoved = false;
                 let goal = false;
@@ -304,7 +320,7 @@ var footballSimulator;
                 return;
             }
             else {
-                let title = out.split("-")[0];
+                let title = out.split("-")[0]; //split string in substrings and return as array
                 let value = out.split("-")[1];
                 cAddPlayerElement.remove(cAddPlayerElement.selectedIndex);
                 let player = {};
@@ -383,7 +399,7 @@ var footballSimulator;
         }
     }
     function changes(element) {
-        let out = !footballSimulator.dels.some(e => e.jersy == element.jersy && e.team == element.team);
+        let out = !footballSimulator.dels.some(e => e.jersy == element.jersy && e.team == element.team); //determines whether specified callback func returns true for any element of an array // ! negation
         return out;
     }
     function updateUI() {
@@ -395,7 +411,7 @@ var footballSimulator;
             // setupReferees();
             var players = [];
             let ball;
-            movable = movable.filter(changes);
+            movable = movable.filter(changes); //filter = returns elemnt of an array that meets the condition specified in the callback func
             movable.forEach((mov) => {
                 if (mov instanceof footballSimulator.Player) {
                     players.push(mov);

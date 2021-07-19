@@ -1,15 +1,18 @@
-"use strict";
-var footballSimulator;
-(function (footballSimulator) {
-    class Referee {
-        constructor(position, role) {
+namespace footballSimulator {
+    export class Referee implements Movable {
+        public currentPosition: Coordinate;
+        public role: RefereeRole;
+
+        constructor(position: Coordinate, role: RefereeRole) {
             this.currentPosition = position;
             this.role = role;
         }
-        move() {
+
+        move(): void {
             throw new Error("Method not implemented.");
         }
-        moveTo(position) {
+
+        moveTo(position: Coordinate): boolean {
             const difference = this.currentPosition.getDistanceTo(position);
             if (difference > 10) {
                 const deltaX = position.x - this.currentPosition.x;
@@ -21,34 +24,45 @@ var footballSimulator;
             }
             return true;
         }
-        draw() {
-            const canvasGround = footballSimulator.getCanvas();
-            const ground = footballSimulator.getGround();
+
+        draw(): void {
+            const ground = getGround();
+
             ground.save();
             ground.beginPath();
             ground.fillStyle = this.role === RefereeRole.GROUND_REF ? "darkred" : "grey";
             ground.strokeStyle = "yellow";
             ground.lineWidth = 2;
-            ground.arc(this.currentPosition.x, this.currentPosition.y - 40, 20, 0, Math.PI * 2);
+            ground.arc(
+                this.currentPosition.x,
+                this.currentPosition.y - 40,
+                20,
+                0,
+                Math.PI * 2
+            );
             ground.closePath();
             ground.fill();
             ground.stroke();
             ground.restore();
+
             // referee & line judge initials
             ground.save();
             ground.beginPath();
             ground.fillStyle = "white";
             ground.font = "20px serif";
-            ground.fillText(String("-"), this.currentPosition.x - 3, this.currentPosition.y - 35, 20);
+            ground.fillText(
+                String("-"),
+                this.currentPosition.x - 3,
+                this.currentPosition.y - 35,
+                20
+            );
             ground.closePath();
             ground.restore();
         }
     }
-    footballSimulator.Referee = Referee;
-    let RefereeRole;
-    (function (RefereeRole) {
-        RefereeRole[RefereeRole["GROUND_REF"] = 0] = "GROUND_REF";
-        RefereeRole[RefereeRole["LINE_REF"] = 1] = "LINE_REF";
-    })(RefereeRole = footballSimulator.RefereeRole || (footballSimulator.RefereeRole = {}));
-})(footballSimulator || (footballSimulator = {}));
-//# sourceMappingURL=Referee.js.map
+
+    export enum RefereeRole {
+        GROUND_REF,
+        LINE_REF
+    }
+}

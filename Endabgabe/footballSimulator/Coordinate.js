@@ -7,7 +7,9 @@ var footballSimulator;
             this.y = yCoord;
         }
         getDistanceTo(coordinate) {
-            return Math.hypot(Math.abs(this.x - coordinate.x), Math.abs(this.y - coordinate.y));
+            return Math.hypot(//Math.hypot returns square root of the sum of squares of its arguments
+            Math.abs(this.x - coordinate.x), //math.abs returns absolute value of a number 
+            Math.abs(this.y - coordinate.y));
         }
         getDistance(coordinate) {
             return new Coordinate(Math.abs(this.x - coordinate.x), Math.abs(this.y - coordinate.y));

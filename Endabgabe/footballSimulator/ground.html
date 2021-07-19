@@ -28,7 +28,8 @@
         <form id="gamedetails" class="hidden">
             <h3>Game Details</h3>
             <fieldset>
-                <legend>Score:</legend> <span class="team-one-score"><b>0</b></span>&nbsp;:&nbsp;<span class="team-two-score"><b>0</b></span>
+                <legend>Score:</legend> <span class="team-one-score"><b>0</b></span>&nbsp;:&nbsp;<span
+                    class="team-two-score"><b>0</b></span>
             </fieldset>
 
             <fieldset>
@@ -54,14 +55,14 @@
                 <button type="button" id="removeplayer">remove</button>
                 <br>
 
-                <p>Choose 1 player only to add:</p>
+                <p>Choose max. 4 players to add back:</p>
                 <select id="playeradd" name="playeradd"></select>
                 <button type="button" id="addplayer">add</button>
             </fieldset>
 
             <fieldset>
-            <legend>Chosen player stats</legend>
-            <p>Choose a team and see players Number / Team / Precision / Speed</p>
+                <legend>Chosen player stats</legend>
+                <p>Choose a team and see players Number / Team / Precision / Speed</p>
                 <select id="ps-team" name="ps-team">
                     <option value="T1">Team 1</option>
                     <option value="T2">Team 2</option>
@@ -104,14 +105,14 @@
                     <p class="player__jersy">0</p>
                 </span>
             </fieldset>
-            
+
             <fieldset>
                 <legend>Player Team</legend>
                 <span class="player-with-ball">
                     <p class="player__team">0</p>
                 </span>
             </fieldset>
-            
+
             <fieldset>
                 <legend>Player Precision</legend>
                 <span class="player-with-ball">
@@ -137,7 +138,8 @@
             <fieldset>
                 <legend>Player Precision</legend>
                 Choose minimum:<br>
-                0<input type="range" id="team-one-precision-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                0<input type="range" id="team-one-precision-min" name="player precision" min="0" max="49" value="25"
+                    step="7">49<br>
                 Choose maximum:<br>
                 50<input type="range" id="team-one-precision-max" name="player precision" min="50" max="100" value="75"
                     step="10">100<br>
@@ -146,14 +148,15 @@
             <fieldset>
                 <legend>Sprint Speed</legend>
                 Choose minimum:<br>
-                0<input type="range" id="team-one-speed-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                0<input type="range" id="team-one-speed-min" name="player precision" min="0" max="49" value="25"
+                    step="7">49<br>
                 Choose maximum:<br>
                 50<input type="range" id="team-one-speed-max" name="player precision" min="50" max="100" value="75"
                     step="10">100<br>
             </fieldset>
             <br>
             <input type="reset" value="reset settings">
-            </form>
+        </form>
 
         <form id="teamtwo">
             <h3>Settings - Team Two</h3>
@@ -165,7 +168,8 @@
             <fieldset>
                 <legend>Player Precision</legend>
                 Choose minimum:<br>
-                0<input type="range" id="team-two-precision-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                0<input type="range" id="team-two-precision-min" name="player precision" min="0" max="49" value="25"
+                    step="7">49<br>
                 Choose maximum:<br>
                 50<input type="range" id="team-two-precision-max" name="player precision" min="50" max="100" value="75"
                     step="10">100<br>
@@ -174,7 +178,8 @@
             <fieldset>
                 <legend>Sprint Speed</legend>
                 Choose minimum:<br>
-                0<input type="range" id="team-two-speed-min" name="player precision" min="0" max="49" value="25" step="7">49<br>
+                0<input type="range" id="team-two-speed-min" name="player precision" min="0" max="49" value="25"
+                    step="7">49<br>
                 Choose maximum:<br>
                 50<input type="range" id="team-two-speed-max" name="player precision" min="50" max="100" value="75"
                     step="10">100<br>

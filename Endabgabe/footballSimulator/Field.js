@@ -5,7 +5,7 @@ var footballSimulator;
     let canvasGround;
     // let ground: CanvasRenderingContext2D;
     function getCanvas() {
-        if (!canvasGround) {
+        if (!canvasGround) { //evaluates canvasGround as a boolean, ! means not equal to, usually returns true if equal, false if not
             canvasGround = document.getElementById("playground");
         }
         return canvasGround;
@@ -28,9 +28,9 @@ var footballSimulator;
         ground.save();
         ground.beginPath();
         ground.fillStyle = "darkgreen";
-        ground.fillRect(0, 0, canvasGround.width, canvasGround.height);
         ground.strokeStyle = "white";
         ground.lineWidth = 2;
+        ground.fillRect(0, 0, canvasGround.width, canvasGround.height);
         ground.moveTo((canvasGround.width / 110) * 5, //52.7
         (canvasGround.height / 75) * 5 //50
         );
